@@ -5,26 +5,26 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebService
+@SpringBootApplication
+@RestController
 public class SiteSearch {
     private static final Map<String, Map<String, String>> siteData = new HashMap<>();
 
     public static void main(String[] args) {
-        loadFromCosmosDB();
-
-        search("global", "distribution");
+        SpringApplication.run(SiteSearch.class, args);
     }
 
-    @WebMethod(operationName = "search", action = "POST")
-    public static void search(@WebParam(name = "site") String siteName, @WebParam(name = "displayname") String name) {
+    @GetMapping(params = {"site", "displayname"})
+    public static void search(String siteName, String name) {
         long l = System.currentTimeMillis();
 
         Map<String, String> matchedData = new HashMap<>();
@@ -43,7 +43,7 @@ public class SiteSearch {
         System.out.println("time taken = " + (System.currentTimeMillis() - l) + "ms");
     }
 
-    @WebMethod(operationName = "load", action = "GET")
+    @GetMapping(name = "load")
     public static void loadFromCosmosDB() {
         try (CosmosClient client = new CosmosClientBuilder()
                 .endpoint(AccountSettings.HOST)
