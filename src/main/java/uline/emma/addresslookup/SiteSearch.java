@@ -24,6 +24,11 @@ public class SiteSearch {
         SpringApplication.run(SiteSearch.class, args);
     }
 
+    @GetMapping(name = "/")
+    public String hello() {
+        return "address lookup";
+    }
+
     @GetMapping(name = "/search")
     public static void search(@RequestParam String siteName, @RequestParam String displayName) {
         long l = System.currentTimeMillis();
