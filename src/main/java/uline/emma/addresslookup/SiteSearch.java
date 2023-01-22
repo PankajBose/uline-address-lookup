@@ -6,10 +6,13 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@WebService
 public class SiteSearch {
     private static final Map<String, Map<String, String>> siteData = new HashMap<>();
 
@@ -19,6 +22,7 @@ public class SiteSearch {
         search("global", "distribution");
     }
 
+    @WebMethod(operationName = "search", action = "POST")
     public static void search(String siteName, String name) {
         long l = System.currentTimeMillis();
 
@@ -38,6 +42,7 @@ public class SiteSearch {
         System.out.println("time taken = " + (System.currentTimeMillis() - l) + "ms");
     }
 
+    @WebMethod(operationName = "load", action = "GET")
     public static void loadFromCosmosDB() {
         try (CosmosClient client = new CosmosClientBuilder()
                 .endpoint(AccountSettings.HOST)
