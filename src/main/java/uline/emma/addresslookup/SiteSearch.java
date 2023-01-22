@@ -19,7 +19,7 @@ public class SiteSearch {
         search("global", "distribution");
     }
 
-    private static void search(String siteName, String name) {
+    public static void search(String siteName, String name) {
         long l = System.currentTimeMillis();
 
         Map<String, String> matchedData = new HashMap<>();
@@ -38,7 +38,7 @@ public class SiteSearch {
         System.out.println("time taken = " + (System.currentTimeMillis() - l) + "ms");
     }
 
-    private static void loadFromCosmosDB() {
+    public static void loadFromCosmosDB() {
         try (CosmosClient client = new CosmosClientBuilder()
                 .endpoint(AccountSettings.HOST)
                 .key(AccountSettings.MASTER_KEY)
