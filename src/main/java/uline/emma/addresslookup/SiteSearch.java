@@ -8,6 +8,7 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -23,8 +24,8 @@ public class SiteSearch {
         SpringApplication.run(SiteSearch.class, args);
     }
 
-    @GetMapping(params = {"site", "displayname"})
-    public static void search(String siteName, String name) {
+    @GetMapping(name = "/search")
+    public static void search(@RequestParam String siteName, @RequestParam String displayName) {
         long l = System.currentTimeMillis();
 
         Map<String, String> matchedData = new HashMap<>();
@@ -34,7 +35,7 @@ public class SiteSearch {
             String personName = entry.getKey();
             String email = entry.getValue();
 
-            if (personName.toLowerCase().contains(name) || email.toLowerCase().contains(name))
+            if (personName.toLowerCase().contains(displayName) || email.toLowerCase().contains(displayName))
                 matchedData.put(personName, email);
         }
 
@@ -43,7 +44,7 @@ public class SiteSearch {
         System.out.println("time taken = " + (System.currentTimeMillis() - l) + "ms");
     }
 
-    @GetMapping(name = "load")
+    @GetMapping("/load")
     public static void loadFromCosmosDB() {
         try (CosmosClient client = new CosmosClientBuilder()
                 .endpoint(AccountSettings.HOST)
