@@ -7,6 +7,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class SiteSearch {
     }
 
     @WebMethod(operationName = "search", action = "POST")
-    public static void search(String siteName, String name) {
+    public static void search(@WebParam(name = "site") String siteName, @WebParam(name = "displayname") String name) {
         long l = System.currentTimeMillis();
 
         Map<String, String> matchedData = new HashMap<>();
