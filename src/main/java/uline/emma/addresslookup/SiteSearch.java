@@ -72,7 +72,7 @@ public class SiteSearch {
 
 
             CosmosPagedIterable<SiteBean> familiesPagedIterable = container.queryItems(
-                    "SELECT top 10 c.sitename,c.displayname,c.emailaddress FROM UlineAddressBookPOC c", queryOptions, SiteBean.class);
+                    "SELECT top 100 c.sitename,c.displayname,c.emailaddress FROM UlineAddressBookPOC c", queryOptions, SiteBean.class);
             for (SiteBean bean : familiesPagedIterable) {
                 System.out.println("bean = " + bean);
                 Map<String, String> personInfo = siteData.computeIfAbsent(bean.getSitename(), k -> new HashMap<>());
